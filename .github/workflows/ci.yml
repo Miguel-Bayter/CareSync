@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Lint, type-check, and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Lint with ruff
+        run: ruff check app/ tests/
+
+      - name: Type-check with mypy
+        run: mypy app/ --ignore-missing-imports
+
+      - name: Run tests with coverage
+        env:
+          DATABASE_URL: "sqlite:///:memory:"
+          SECRET_KEY: "test-secret-key-for-ci-only"
+          ENVIRONMENT: "development"
+        run: pytest tests/ --cov=app --cov-report=xml -v
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: false
