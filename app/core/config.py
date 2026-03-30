@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     secret_key: SecretStr = SecretStr("change-me-in-production")
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
-    app_name: str = "MiMedicacion API"
+    app_name: str = "CareSync API"
     environment: str = "production"
     debug: bool = False
     api_v1_prefix: str = "/api/v1"
