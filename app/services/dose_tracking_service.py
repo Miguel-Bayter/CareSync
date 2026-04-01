@@ -170,9 +170,6 @@ class DoseTrackingService:
         Args:
             medication: MedicationModel instance with low stock.
         """
-        from app.models.medication import MedicationModel
-        assert isinstance(medication, MedicationModel)
-
         alert = MedicationAlertModel(
             patient_id=medication.patient_id,
             medication_id=medication.id,

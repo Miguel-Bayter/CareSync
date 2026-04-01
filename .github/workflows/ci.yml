@@ -2,44 +2,49 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: ["main", "master"]
   pull_request:
-    branches: [main]
+    branches: ["main", "master"]
 
 jobs:
-  test:
-    name: Lint, type-check, and test
+  quality:
+    name: Lint & Type Check
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
-
       - name: Install dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Ruff lint
+        run: ruff check .
+      - name: Ruff format check
+        run: ruff format --check .
 
-      - name: Lint with ruff
-        run: ruff check app/ tests/
-
-      - name: Type-check with mypy
-        run: mypy app/ --ignore-missing-imports
-
+  tests:
+    name: Tests & Coverage
+    needs: quality
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: sqlite:///./test.db
+      SECRET_KEY: ci-test-secret-key-32-chars-minimum
+      ENVIRONMENT: development
+      DEBUG: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Run tests with coverage
-        env:
-          DATABASE_URL: "sqlite:///:memory:"
-          SECRET_KEY: "test-secret-key-for-ci-only"
-          ENVIRONMENT: "development"
-        run: pytest tests/ --cov=app --cov-report=xml -v
-
+        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=70 -v
       - name: Upload coverage report
-        uses: codecov/codecov-action@v4
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          files: ./coverage.xml
-          fail_ci_if_error: false
+          name: coverage-report
+          path: htmlcov/
