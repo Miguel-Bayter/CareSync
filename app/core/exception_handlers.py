@@ -43,9 +43,7 @@ def register_exception_handlers(app: FastAPI) -> None:
         )
 
     @app.exception_handler(DomainValidationError)
-    async def domain_validation_handler(
-        request: Request, exc: DomainValidationError
-    ) -> JSONResponse:
+    async def domain_validation_handler(request: Request, exc: DomainValidationError) -> JSONResponse:
         logger.info("domain_validation_error", path=request.url.path, detail=exc.message)
         return JSONResponse(
             status_code=422,
@@ -61,9 +59,7 @@ def register_exception_handlers(app: FastAPI) -> None:
         )
 
     @app.exception_handler(ExternalServiceError)
-    async def external_service_handler(
-        request: Request, exc: ExternalServiceError
-    ) -> JSONResponse:
+    async def external_service_handler(request: Request, exc: ExternalServiceError) -> JSONResponse:
         logger.warning("external_service_error", path=request.url.path, detail=exc.message)
         return JSONResponse(
             status_code=503,

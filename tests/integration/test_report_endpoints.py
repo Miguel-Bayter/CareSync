@@ -57,9 +57,7 @@ def report_setup(client: TestClient):
 
 
 class TestMedicalPdfReport:
-    def test_pdf_report_returns_200_with_pdf_content_type(
-        self, client: TestClient, report_setup
-    ) -> None:
+    def test_pdf_report_returns_200_with_pdf_content_type(self, client: TestClient, report_setup) -> None:
         """GET /reports/{patient_id}/medical-pdf should return a PDF file."""
         token, patient_id = report_setup
         response = client.get(
@@ -71,17 +69,13 @@ class TestMedicalPdfReport:
         assert "attachment" in response.headers["content-disposition"]
         assert len(response.content) > 0
 
-    def test_pdf_report_without_auth_returns_401(
-        self, client: TestClient, report_setup
-    ) -> None:
+    def test_pdf_report_without_auth_returns_401(self, client: TestClient, report_setup) -> None:
         """PDF report endpoint should require authentication."""
         _, patient_id = report_setup
         response = client.get(f"{REPORTS_URL}{patient_id}/medical-pdf")
         assert response.status_code == 401
 
-    def test_pdf_report_for_other_caregivers_patient_returns_403(
-        self, client: TestClient, report_setup
-    ) -> None:
+    def test_pdf_report_for_other_caregivers_patient_returns_403(self, client: TestClient, report_setup) -> None:
         """Caregiver should not access another caregiver's patient report."""
         _, patient_id = report_setup
         other_token = _register_and_login(client, "other_report@example.com")

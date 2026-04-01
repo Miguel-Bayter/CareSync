@@ -27,11 +27,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         app_name=settings.app_name,
         environment=settings.environment,
     )
-    setup_scheduler()
-    scheduler.start()
-    logger.info("scheduler_started", jobs=len(scheduler.get_jobs()))
+    if settings.enable_scheduler:
+        setup_scheduler()
+        scheduler.start()
+        logger.info("scheduler_started", jobs=len(scheduler.get_jobs()))
+    else:
+        logger.info("scheduler_disabled")
     yield
-    scheduler.shutdown()
+    if settings.enable_scheduler:
+        scheduler.shutdown()
     logger.info("application_shutdown")
 
 
@@ -49,10 +53,13 @@ def create_app() -> FastAPI:
     # -----------------------------------------------------------------------
     # Middleware (order matters: outermost is applied last)
     # -----------------------------------------------------------------------
+    # allow_credentials must be False when allow_origins=["*"] — the combination
+    # is rejected by browsers (and by Starlette >=0.36 at runtime). Bearer tokens
+    # in the Authorization header are not "credentials" in the CORS sense.
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],  # Portfolio project — open CORS
-        allow_credentials=True,
+        allow_origins=["*"],
+        allow_credentials=False,
         allow_methods=["*"],
         allow_headers=["*"],
     )
@@ -97,6 +104,7 @@ async def _security_headers_dispatch(
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
 
 

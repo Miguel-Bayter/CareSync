@@ -18,9 +18,7 @@ def registration_payload() -> dict[str, str]:
 
 
 class TestRegisterEndpoint:
-    def test_register_returns_201(
-        self, client: TestClient, registration_payload: dict[str, str]
-    ) -> None:
+    def test_register_returns_201(self, client: TestClient, registration_payload: dict[str, str]) -> None:
         """POST /auth/register should return 201 with the created caregiver."""
         response = client.post(REGISTER_URL, json=registration_payload)
         assert response.status_code == 201
@@ -40,9 +38,7 @@ class TestRegisterEndpoint:
 
 
 class TestLoginEndpoint:
-    def test_login_returns_jwt_token(
-        self, client: TestClient, registration_payload: dict[str, str]
-    ) -> None:
+    def test_login_returns_jwt_token(self, client: TestClient, registration_payload: dict[str, str]) -> None:
         """POST /auth/login should return a valid bearer token."""
         client.post(REGISTER_URL, json=registration_payload)
         response = client.post(
@@ -54,9 +50,7 @@ class TestLoginEndpoint:
         assert "access_token" in data
         assert data["token_type"] == "bearer"
 
-    def test_login_wrong_password_returns_422(
-        self, client: TestClient, registration_payload: dict[str, str]
-    ) -> None:
+    def test_login_wrong_password_returns_422(self, client: TestClient, registration_payload: dict[str, str]) -> None:
         """POST /auth/login with wrong password should return error."""
         client.post(REGISTER_URL, json=registration_payload)
         response = client.post(

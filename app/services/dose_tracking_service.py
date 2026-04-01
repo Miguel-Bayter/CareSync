@@ -150,8 +150,7 @@ class DoseTrackingService:
 
         overall = (
             round(
-                sum(r.adherence_percentage for r in medication_reports)
-                / len(medication_reports),
+                sum(r.adherence_percentage for r in medication_reports) / len(medication_reports),
                 2,
             )
             if medication_reports

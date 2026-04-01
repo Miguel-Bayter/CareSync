@@ -69,6 +69,7 @@ class TestCriticalStockEdgeCases:
     def test_critical_stock_unknown_patient_returns_404(self, client: TestClient) -> None:
         """GET /medications/critical-stock with unknown patient_id → 404 (line 117)."""
         from uuid import uuid4
+
         token = _register_and_login(client, "stock404@example.com")
         response = client.get(
             f"{MEDICATIONS_URL}critical-stock",

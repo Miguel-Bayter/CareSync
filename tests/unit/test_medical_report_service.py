@@ -58,9 +58,7 @@ class TestGenerateMonthlyMedicalReport:
         service.patient_repo.find_by_id.return_value = None
 
         with pytest.raises(NotFoundError):
-            service.generate_monthly_medical_report(
-                patient_id=uuid4(), caregiver_id=uuid4()
-            )
+            service.generate_monthly_medical_report(patient_id=uuid4(), caregiver_id=uuid4())
 
     def test_raises_forbidden_when_wrong_caregiver(self) -> None:
         caregiver_id = uuid4()
@@ -72,9 +70,7 @@ class TestGenerateMonthlyMedicalReport:
         service.alert_repo.find_last_month_by_patient.return_value = []
 
         with pytest.raises(ForbiddenError):
-            service.generate_monthly_medical_report(
-                patient_id=patient.id, caregiver_id=caregiver_id
-            )
+            service.generate_monthly_medical_report(patient_id=patient.id, caregiver_id=caregiver_id)
 
     def test_returns_pdf_bytes_with_no_medications_no_alerts(self) -> None:
         caregiver_id = uuid4()
@@ -85,9 +81,7 @@ class TestGenerateMonthlyMedicalReport:
         service.medication_repo.find_all_by_patient.return_value = []
         service.alert_repo.find_last_month_by_patient.return_value = []
 
-        result = service.generate_monthly_medical_report(
-            patient_id=patient.id, caregiver_id=caregiver_id
-        )
+        result = service.generate_monthly_medical_report(patient_id=patient.id, caregiver_id=caregiver_id)
 
         assert isinstance(result, bytes)
         assert len(result) > 0
@@ -113,9 +107,7 @@ class TestGenerateMonthlyMedicalReport:
             DoseStatus.PENDING: 10,
         }
 
-        result = service.generate_monthly_medical_report(
-            patient_id=patient.id, caregiver_id=caregiver_id
-        )
+        result = service.generate_monthly_medical_report(patient_id=patient.id, caregiver_id=caregiver_id)
 
         assert isinstance(result, bytes)
         assert result[:4] == b"%PDF"
@@ -138,9 +130,7 @@ class TestGenerateMonthlyMedicalReport:
             DoseStatus.PENDING: 0,
         }
 
-        result = service.generate_monthly_medical_report(
-            patient_id=patient.id, caregiver_id=caregiver_id
-        )
+        result = service.generate_monthly_medical_report(patient_id=patient.id, caregiver_id=caregiver_id)
         assert isinstance(result, bytes)
 
 

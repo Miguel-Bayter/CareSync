@@ -29,9 +29,7 @@ def _make_session() -> MagicMock:
 class TestDoseReminderJob:
     @patch("app.scheduler.jobs.MedicationAlertService")
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_calls_process_dose_reminders(
-        self, mock_session_local: MagicMock, mock_service_cls: MagicMock
-    ) -> None:
+    def test_calls_process_dose_reminders(self, mock_session_local: MagicMock, mock_service_cls: MagicMock) -> None:
         db = _make_session()
         mock_session_local.return_value = db
         mock_service = MagicMock()
@@ -44,9 +42,7 @@ class TestDoseReminderJob:
 
     @patch("app.scheduler.jobs.MedicationAlertService")
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_commits_on_success(
-        self, mock_session_local: MagicMock, mock_service_cls: MagicMock
-    ) -> None:
+    def test_commits_on_success(self, mock_session_local: MagicMock, mock_service_cls: MagicMock) -> None:
         db = _make_session()
         mock_session_local.return_value = db
         mock_service = MagicMock()
@@ -60,9 +56,7 @@ class TestDoseReminderJob:
 
     @patch("app.scheduler.jobs.MedicationAlertService")
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_rollback_on_exception(
-        self, mock_session_local: MagicMock, mock_service_cls: MagicMock
-    ) -> None:
+    def test_rollback_on_exception(self, mock_session_local: MagicMock, mock_service_cls: MagicMock) -> None:
         db = _make_session()
         mock_session_local.return_value = db
         mock_service = MagicMock()
@@ -77,9 +71,7 @@ class TestDoseReminderJob:
 
     @patch("app.scheduler.jobs.MedicationAlertService")
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_always_closes_session(
-        self, mock_session_local: MagicMock, mock_service_cls: MagicMock
-    ) -> None:
+    def test_always_closes_session(self, mock_session_local: MagicMock, mock_service_cls: MagicMock) -> None:
         db = _make_session()
         mock_session_local.return_value = db
         mock_service = MagicMock()
@@ -99,9 +91,7 @@ class TestDoseReminderJob:
 class TestMissedDoseDetectionJob:
     @patch("app.scheduler.jobs.MedicationAlertService")
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_calls_process_missed_doses(
-        self, mock_session_local: MagicMock, mock_service_cls: MagicMock
-    ) -> None:
+    def test_calls_process_missed_doses(self, mock_session_local: MagicMock, mock_service_cls: MagicMock) -> None:
         db = _make_session()
         mock_session_local.return_value = db
         mock_service = MagicMock()
@@ -114,9 +104,7 @@ class TestMissedDoseDetectionJob:
 
     @patch("app.scheduler.jobs.MedicationAlertService")
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_commits_on_success(
-        self, mock_session_local: MagicMock, mock_service_cls: MagicMock
-    ) -> None:
+    def test_commits_on_success(self, mock_session_local: MagicMock, mock_service_cls: MagicMock) -> None:
         db = _make_session()
         mock_session_local.return_value = db
         mock_service = MagicMock()
@@ -129,9 +117,7 @@ class TestMissedDoseDetectionJob:
 
     @patch("app.scheduler.jobs.MedicationAlertService")
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_rollback_on_exception(
-        self, mock_session_local: MagicMock, mock_service_cls: MagicMock
-    ) -> None:
+    def test_rollback_on_exception(self, mock_session_local: MagicMock, mock_service_cls: MagicMock) -> None:
         db = _make_session()
         mock_session_local.return_value = db
         mock_service = MagicMock()
@@ -144,9 +130,7 @@ class TestMissedDoseDetectionJob:
 
     @patch("app.scheduler.jobs.MedicationAlertService")
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_always_closes_session(
-        self, mock_session_local: MagicMock, mock_service_cls: MagicMock
-    ) -> None:
+    def test_always_closes_session(self, mock_session_local: MagicMock, mock_service_cls: MagicMock) -> None:
         db = _make_session()
         mock_session_local.return_value = db
         mock_service = MagicMock()
@@ -165,9 +149,7 @@ class TestMissedDoseDetectionJob:
 
 class TestDailyStockCheckJob:
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_no_patients_logs_zero_critical(
-        self, mock_session_local: MagicMock
-    ) -> None:
+    def test_no_patients_logs_zero_critical(self, mock_session_local: MagicMock) -> None:
         db = _make_session()
         db.query.return_value.all.return_value = []
         mock_session_local.return_value = db
@@ -206,9 +188,7 @@ class TestDailyStockCheckJob:
         db.close.assert_called_once()
 
     @patch("app.scheduler.jobs.SessionLocal")
-    def test_handles_exception_without_raising(
-        self, mock_session_local: MagicMock
-    ) -> None:
+    def test_handles_exception_without_raising(self, mock_session_local: MagicMock) -> None:
         db = _make_session()
         db.query.side_effect = RuntimeError("DB exploded")
         mock_session_local.return_value = db

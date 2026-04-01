@@ -53,7 +53,7 @@ class CaregiverAuthService:
             hashed_password=hash_password(password),
         )
         saved = self._repo.save(caregiver)
-        logger.info("caregiver_registered", caregiver_id=str(saved.id), email=email)
+        logger.info("caregiver_registered", caregiver_id=str(saved.id))
         return CaregiverResponse.model_validate(saved)
 
     def authenticate_caregiver(self, email: str, password: str) -> TokenResponse:

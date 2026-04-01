@@ -110,9 +110,7 @@ class TestFetchInteractionsFromFda:
     def test_returns_interaction_text_on_successful_response(self) -> None:
         mock_response = MagicMock()
         mock_response.status_code = 200
-        mock_response.json.return_value = {
-            "results": [{"drug_interactions": ["May cause lactic acidosis."]}]
-        }
+        mock_response.json.return_value = {"results": [{"drug_interactions": ["May cause lactic acidosis."]}]}
         mock_client = MagicMock()
         mock_client.__enter__ = MagicMock(return_value=mock_client)
         mock_client.__exit__ = MagicMock(return_value=False)

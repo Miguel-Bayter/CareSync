@@ -53,18 +53,13 @@ class MedicationAlertService:
             medication = self.medication_repo.find_by_id(dose.medication_id)
             if medication is None:
                 continue
-            if self.alert_repo.recent_alert_exists(
-                medication.id, AlertType.DOSE_REMINDER, hours=2
-            ):
+            if self.alert_repo.recent_alert_exists(medication.id, AlertType.DOSE_REMINDER, hours=2):
                 continue
             self._create_and_send_alert(
                 patient_id=medication.patient_id,
                 medication_id=medication.id,
                 alert_type=AlertType.DOSE_REMINDER,
-                message=(
-                    f"Reminder: {medication.generic_name} "
-                    f"({medication.dose_mg}mg) is due in 15 minutes."
-                ),
+                message=(f"Reminder: {medication.generic_name} ({medication.dose_mg}mg) is due in 15 minutes."),
             )
             sent += 1
         return sent
@@ -82,17 +77,12 @@ class MedicationAlertService:
             if medication is None:
                 continue
             dose.status = "missed"
-            if not self.alert_repo.recent_alert_exists(
-                medication.id, AlertType.URGENT_MISSED_DOSE, hours=6
-            ):
+            if not self.alert_repo.recent_alert_exists(medication.id, AlertType.URGENT_MISSED_DOSE, hours=6):
                 self._create_and_send_alert(
                     patient_id=medication.patient_id,
                     medication_id=medication.id,
                     alert_type=AlertType.URGENT_MISSED_DOSE,
-                    message=(
-                        f"Missed dose: {medication.generic_name} "
-                        f"({medication.dose_mg}mg) was not taken on time."
-                    ),
+                    message=(f"Missed dose: {medication.generic_name} ({medication.dose_mg}mg) was not taken on time."),
                 )
             processed += 1
         if processed:

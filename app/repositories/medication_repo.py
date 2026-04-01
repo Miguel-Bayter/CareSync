@@ -52,8 +52,7 @@ class MedicationRepository(BaseRepository[MedicationModel]):
                 MedicationModel.patient_id == patient_id,
                 MedicationModel.is_active == True,  # noqa: E712
                 or_(
-                    MedicationModel.current_stock_units
-                    <= MedicationModel.minimum_stock_units,
+                    MedicationModel.current_stock_units <= MedicationModel.minimum_stock_units,
                     MedicationModel.expiration_date <= expiry_threshold,
                 ),
             )

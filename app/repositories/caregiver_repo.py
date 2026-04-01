@@ -22,9 +22,7 @@ class CaregiverRepository(BaseRepository[ResponsibleCaregiverModel]):
         Returns:
             The matching ResponsibleCaregiverModel, or None.
         """
-        stmt = select(ResponsibleCaregiverModel).where(
-            ResponsibleCaregiverModel.email == email
-        )
+        stmt = select(ResponsibleCaregiverModel).where(ResponsibleCaregiverModel.email == email)
         return self.db.scalar(stmt)
 
     def find_by_id(self, id: UUID) -> ResponsibleCaregiverModel | None:

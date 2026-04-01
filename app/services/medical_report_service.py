@@ -31,9 +31,7 @@ class MedicalReportService:
         self.dose_repo = ScheduledDoseRepository(db)
         self.alert_repo = AlertRepository(db)
 
-    def generate_monthly_medical_report(
-        self, patient_id: UUID, caregiver_id: UUID
-    ) -> bytes:
+    def generate_monthly_medical_report(self, patient_id: UUID, caregiver_id: UUID) -> bytes:
         """Build and return a PDF report as bytes.
 
         Args:
@@ -83,7 +81,9 @@ class MedicalReportService:
 
     def _build_pdf(self, patient: object, adherence_list: list, alerts: list) -> bytes:
         from app.models.patient import ElderlyPatientModel
-        assert isinstance(patient, ElderlyPatientModel)
+
+        if not isinstance(patient, ElderlyPatientModel):
+            raise TypeError(f"Expected ElderlyPatientModel, got {type(patient).__name__}")
 
         pdf = FPDF()
         pdf.set_auto_page_break(auto=True, margin=15)
@@ -91,7 +91,7 @@ class MedicalReportService:
 
         # ── Header ──────────────────────────────────────────────────────
         pdf.set_font("Helvetica", "B", 20)
-        pdf.set_fill_color(15, 107, 59)   # dark green
+        pdf.set_fill_color(15, 107, 59)  # dark green
         pdf.set_text_color(255, 255, 255)
         pdf.cell(0, 14, "CareSync - Monthly Medical Report", align="C", fill=True, new_x="LMARGIN", new_y="NEXT")
 
@@ -110,7 +110,13 @@ class MedicalReportService:
         pdf.cell(0, 7, f"Room:         {patient.room_number or 'N/A'}", new_x="LMARGIN", new_y="NEXT")
         pdf.cell(0, 7, f"Date of Birth: {patient.date_of_birth}", new_x="LMARGIN", new_y="NEXT")
         if patient.emergency_contact_name:
-            pdf.cell(0, 7, f"Emergency Contact: {patient.emergency_contact_name} - {patient.emergency_contact_phone or ''}", new_x="LMARGIN", new_y="NEXT")
+            pdf.cell(
+                0,
+                7,
+                f"Emergency Contact: {patient.emergency_contact_name} - {patient.emergency_contact_phone or ''}",
+                new_x="LMARGIN",
+                new_y="NEXT",
+            )
         pdf.ln(5)
 
         # ── Medications & Adherence ──────────────────────────────────────
@@ -180,7 +186,14 @@ class MedicalReportService:
         pdf.ln(8)
         pdf.set_font("Helvetica", "I", 9)
         pdf.set_text_color(120, 120, 120)
-        pdf.cell(0, 6, "This report was generated automatically by CareSync API. Present to your physician at the next visit.", align="C", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(
+            0,
+            6,
+            "This report was generated automatically by CareSync API. Present to your physician at the next visit.",
+            align="C",
+            new_x="LMARGIN",
+            new_y="NEXT",
+        )
 
         return bytes(pdf.output())
 
@@ -188,7 +201,7 @@ class MedicalReportService:
     def _adherence_color(pct: float) -> tuple[int, int, int]:
         """Return RGB color based on adherence level: green / orange / red."""
         if pct >= 80:
-            return (15, 107, 59)   # green
+            return (15, 107, 59)  # green
         if pct >= 50:
-            return (180, 83, 9)    # orange
-        return (153, 27, 27)       # red
+            return (180, 83, 9)  # orange
+        return (153, 27, 27)  # red

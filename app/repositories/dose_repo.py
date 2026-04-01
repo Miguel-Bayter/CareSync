@@ -74,9 +74,7 @@ class ScheduledDoseRepository(BaseRepository[ScheduledDoseModel]):
             .all()
         )
 
-    def calculate_adherence_stats(
-        self, medication_id: UUID, days: int = 30
-    ) -> dict[DoseStatus, int]:
+    def calculate_adherence_stats(self, medication_id: UUID, days: int = 30) -> dict[DoseStatus, int]:
         """Count doses by status for the last N days.
 
         Args:

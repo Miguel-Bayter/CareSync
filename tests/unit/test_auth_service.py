@@ -81,9 +81,7 @@ class TestAuthenticateCaregiver:
         service = _make_service(repo)
 
         with pytest.raises(InvalidCredentialsError):
-            service.authenticate_caregiver(
-                email="test@example.com", password="WrongPassword"
-            )
+            service.authenticate_caregiver(email="test@example.com", password="WrongPassword")
 
     def test_raises_when_user_not_found(self) -> None:
         """Should raise InvalidCredentialsError when e-mail is not found."""
@@ -92,6 +90,4 @@ class TestAuthenticateCaregiver:
         service = _make_service(repo)
 
         with pytest.raises(InvalidCredentialsError):
-            service.authenticate_caregiver(
-                email="nobody@example.com", password="Password123"
-            )
+            service.authenticate_caregiver(email="nobody@example.com", password="Password123")

@@ -1,6 +1,5 @@
 """Integration tests for patient management endpoints."""
 
-
 import pytest
 from fastapi.testclient import TestClient
 
@@ -74,9 +73,7 @@ class TestGetPatientSummary:
         token_owner = _register_and_login(client, "owner@example.com")
         token_other = _register_and_login(client, "other@example.com")
 
-        create_resp = client.post(
-            PATIENTS_URL, json=patient_payload, headers=_auth_headers(token_owner)
-        )
+        create_resp = client.post(PATIENTS_URL, json=patient_payload, headers=_auth_headers(token_owner))
         patient_id = create_resp.json()["id"]
 
         response = client.get(

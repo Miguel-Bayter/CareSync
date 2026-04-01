@@ -1,6 +1,5 @@
 """Unit tests for domain exceptions — covers all constructors with/without args."""
 
-
 from app.core.exceptions import (
     AppException,
     CaregiverNotFoundError,

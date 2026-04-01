@@ -80,6 +80,7 @@ def daily_stock_check_job() -> None:
 
         # Gather all caregivers' patients via a direct query
         from app.models.patient import ElderlyPatientModel
+
         patients = db.query(ElderlyPatientModel).all()
 
         critical_total = 0

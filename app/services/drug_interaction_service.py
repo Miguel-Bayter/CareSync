@@ -54,9 +54,7 @@ class DrugInteractionService:
     def __init__(self, medication_repo: MedicationRepository) -> None:
         self.medication_repo = medication_repo
 
-    def check_patient_drug_interactions(
-        self, patient_id: UUID
-    ) -> list[DrugInteractionReport]:
+    def check_patient_drug_interactions(self, patient_id: UUID) -> list[DrugInteractionReport]:
         """Return interaction reports for all active medications of a patient.
 
         Args:

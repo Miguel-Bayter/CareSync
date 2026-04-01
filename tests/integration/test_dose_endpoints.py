@@ -58,9 +58,7 @@ def enrolled_setup(client: TestClient):
 
 
 class TestConfirmDose:
-    def test_confirm_dose_returns_200(
-        self, client: TestClient, enrolled_setup, db_session
-    ) -> None:
+    def test_confirm_dose_returns_200(self, client: TestClient, enrolled_setup, db_session) -> None:
         """POST /doses/{dose_id}/confirm should mark the dose as taken."""
         from uuid import UUID
 
@@ -71,9 +69,7 @@ class TestConfirmDose:
         token, _, medication_id = enrolled_setup
 
         # Fetch the first scheduled dose directly from the test DB session
-        stmt = select(ScheduledDoseModel).where(
-            ScheduledDoseModel.medication_id == UUID(medication_id)
-        )
+        stmt = select(ScheduledDoseModel).where(ScheduledDoseModel.medication_id == UUID(medication_id))
         dose = db_session.scalars(stmt).first()
         assert dose is not None, "No doses were scheduled for the medication"
 
@@ -88,9 +84,7 @@ class TestConfirmDose:
         assert "remaining_stock" in data
         assert data["remaining_stock"] == 29  # 30 - 1
 
-    def test_confirm_dose_twice_returns_409(
-        self, client: TestClient, enrolled_setup, db_session
-    ) -> None:
+    def test_confirm_dose_twice_returns_409(self, client: TestClient, enrolled_setup, db_session) -> None:
         """Confirming the same dose twice should return 409 Conflict."""
         from uuid import UUID
 
@@ -99,9 +93,7 @@ class TestConfirmDose:
         from app.models.dose import ScheduledDoseModel
 
         token, _, medication_id = enrolled_setup
-        stmt = select(ScheduledDoseModel).where(
-            ScheduledDoseModel.medication_id == UUID(medication_id)
-        )
+        stmt = select(ScheduledDoseModel).where(ScheduledDoseModel.medication_id == UUID(medication_id))
         dose = db_session.scalars(stmt).first()
 
         client.post(
@@ -116,9 +108,7 @@ class TestConfirmDose:
         )
         assert second_response.status_code == 409
 
-    def test_confirm_dose_without_auth_returns_401(
-        self, client: TestClient, enrolled_setup, db_session
-    ) -> None:
+    def test_confirm_dose_without_auth_returns_401(self, client: TestClient, enrolled_setup, db_session) -> None:
         """Unauthenticated confirm should return 401."""
         from uuid import UUID
 
@@ -127,9 +117,7 @@ class TestConfirmDose:
         from app.models.dose import ScheduledDoseModel
 
         _, _, medication_id = enrolled_setup
-        stmt = select(ScheduledDoseModel).where(
-            ScheduledDoseModel.medication_id == UUID(medication_id)
-        )
+        stmt = select(ScheduledDoseModel).where(ScheduledDoseModel.medication_id == UUID(medication_id))
         dose = db_session.scalars(stmt).first()
 
         response = client.post(f"{DOSES_URL}{dose.id}/confirm", json={})
@@ -137,9 +125,7 @@ class TestConfirmDose:
 
 
 class TestAdherenceReport:
-    def test_adherence_returns_200_with_medications(
-        self, client: TestClient, enrolled_setup
-    ) -> None:
+    def test_adherence_returns_200_with_medications(self, client: TestClient, enrolled_setup) -> None:
         """GET /doses/adherence/{patient_id} should return adherence stats."""
         token, patient_id, _ = enrolled_setup
         response = client.get(
@@ -154,9 +140,7 @@ class TestAdherenceReport:
         assert len(data["medications"]) == 1
         assert data["medications"][0]["generic_name"] == "lisinopril"
 
-    def test_adherence_for_other_caregivers_patient_returns_403(
-        self, client: TestClient, enrolled_setup
-    ) -> None:
+    def test_adherence_for_other_caregivers_patient_returns_403(self, client: TestClient, enrolled_setup) -> None:
         """Caregiver should not access another caregiver's patient adherence."""
         _, patient_id, _ = enrolled_setup
         other_token = _register_and_login(client, "other_dose@example.com")

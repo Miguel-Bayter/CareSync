@@ -43,9 +43,10 @@ def get_current_caregiver(
 
     caregiver = CaregiverRepository(db).find_by_id(UUID(subject))
     if caregiver is None:
+        # Same message as invalid-token case — prevents user enumeration
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not found",
+            detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
     return caregiver

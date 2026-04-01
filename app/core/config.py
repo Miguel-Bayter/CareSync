@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import SecretStr
+from pydantic import SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,7 +13,16 @@ class Settings(BaseSettings):
     )
 
     database_url: str = "postgresql://user:password@localhost/mimedicacion"
-    secret_key: SecretStr = SecretStr("change-me-in-production")
+    secret_key: SecretStr = SecretStr("change-me-in-production-must-be-32c")
+
+    @field_validator("secret_key", mode="before")
+    @classmethod
+    def validate_secret_key_strength(cls, v: object) -> object:
+        raw = v.get_secret_value() if isinstance(v, SecretStr) else str(v)
+        if len(raw) < 32:
+            raise ValueError("SECRET_KEY must be at least 32 characters long.")
+        return v
+
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
     app_name: str = "CareSync API"
@@ -24,6 +33,7 @@ class Settings(BaseSettings):
     gmail_app_password: SecretStr = SecretStr("")
     openfda_base_url: str = "https://api.fda.gov/drug/label.json"
     openfda_timeout_seconds: float = 15.0
+    enable_scheduler: bool = True
 
     @property
     def is_development(self) -> bool:

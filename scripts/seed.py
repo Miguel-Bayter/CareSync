@@ -66,7 +66,7 @@ MEDICATIONS = [
         "dose_mg": 100.0,
         "frequency_hours": 24,
         "with_food": True,
-        "current_stock_units": 5,   # critical stock — demonstrates alert
+        "current_stock_units": 5,  # critical stock — demonstrates alert
         "minimum_stock_units": 5,
         "days_until_expiry": 90,
     },
@@ -78,7 +78,7 @@ MEDICATIONS = [
         "with_food": False,
         "current_stock_units": 30,
         "minimum_stock_units": 7,
-        "days_until_expiry": 8,   # expiring soon — demonstrates alert
+        "days_until_expiry": 8,  # expiring soon — demonstrates alert
     },
 ]
 
@@ -86,14 +86,13 @@ MEDICATIONS = [
 def seed() -> None:
     """Create all tables and insert realistic Colombian seed data."""
     import app.models  # noqa: F401 — register all models with mapper
+
     Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
     try:
         existing = db.scalar(
-            select(ResponsibleCaregiverModel).where(
-                ResponsibleCaregiverModel.email == CAREGIVER_EMAIL
-            )
+            select(ResponsibleCaregiverModel).where(ResponsibleCaregiverModel.email == CAREGIVER_EMAIL)
         )
         if existing is not None:
             print("Seed data already present — skipping.")
@@ -162,12 +161,14 @@ def seed() -> None:
                     status = DoseStatus.PENDING.value
                     taken_at = None
 
-                doses.append(ScheduledDoseModel(
-                    medication_id=medication.id,
-                    scheduled_for=scheduled,
-                    status=status,
-                    taken_at=taken_at,
-                ))
+                doses.append(
+                    ScheduledDoseModel(
+                        medication_id=medication.id,
+                        scheduled_for=scheduled,
+                        status=status,
+                        taken_at=taken_at,
+                    )
+                )
 
             db.add_all(doses)
             total_doses_created += len(doses)

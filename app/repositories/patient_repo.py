@@ -33,7 +33,5 @@ class ElderlyPatientRepository(BaseRepository[ElderlyPatientModel]):
         Returns:
             List of ElderlyPatientModel instances (may be empty).
         """
-        stmt = select(ElderlyPatientModel).where(
-            ElderlyPatientModel.caregiver_id == caregiver_id
-        )
+        stmt = select(ElderlyPatientModel).where(ElderlyPatientModel.caregiver_id == caregiver_id)
         return list(self.db.scalars(stmt).all())
