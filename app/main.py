@@ -13,7 +13,8 @@ import app.models  # noqa: F401 — registers all ORM models with SQLAlchemy map
 from app.core.config import settings
 from app.core.exception_handlers import register_exception_handlers
 from app.core.logging_config import RequestLoggingMiddleware, setup_logging
-from app.routers import auth, doses, medications, patients
+from app.routers import auth, doses, medications, patients, reports
+from app.scheduler.scheduler import scheduler, setup_scheduler
 
 
 @asynccontextmanager
@@ -26,7 +27,11 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         app_name=settings.app_name,
         environment=settings.environment,
     )
+    setup_scheduler()
+    scheduler.start()
+    logger.info("scheduler_started", jobs=len(scheduler.get_jobs()))
     yield
+    scheduler.shutdown()
     logger.info("application_shutdown")
 
 
@@ -67,6 +72,7 @@ def create_app() -> FastAPI:
     app.include_router(patients.router, prefix=prefix)
     app.include_router(medications.router, prefix=prefix)
     app.include_router(doses.router, prefix=prefix)
+    app.include_router(reports.router, prefix=prefix)
 
     # -----------------------------------------------------------------------
     # Health check

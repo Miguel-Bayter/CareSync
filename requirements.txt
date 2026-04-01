@@ -9,5 +9,5 @@ PyJWT>=2.10.0
 passlib[bcrypt]>=1.7.4
 httpx>=0.28.0
 structlog>=24.4.0
-weasyprint>=65.0
+fpdf2>=2.8.0
 apscheduler>=3.10.0
