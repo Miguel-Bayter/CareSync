@@ -2,9 +2,10 @@
 # Python
 # =============================================================================
 __pycache__/
-*.py[cod]
+*.py[codz]
 *$py.class
 *.so
+cython_debug/
 .Python
 build/
 develop-eggs/
@@ -23,34 +24,68 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
 
+# =============================================================================
 # Virtual environments
+# =============================================================================
 venv/
 env/
 ENV/
 .venv/
-.env.venv/
+env.bak/
+venv.bak/
+__pypackages__/
 
 # =============================================================================
-# Environment & Secrets
+# Environment & Secrets  ← SECURITY CRITICAL
 # =============================================================================
 .env
 .env.*
 !.env.example
+.envrc
+secrets.json
+secrets.yaml
+secrets.toml
 *.pem
 *.key
-secrets/
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+.pypirc
+service-account*.json
+*credentials*.json
+firebase-service-account.json
+gcp-credentials.json
+http-client.private.env.json
+
+# =============================================================================
+# Local / test databases  ← never commit real or test data
+# =============================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite3-journal
+test.db
 
 # =============================================================================
 # Testing & Coverage
 # =============================================================================
 .pytest_cache/
-.coverage
-coverage.xml
+.cache/
+.hypothesis/
+.tox/
+.nox/
 htmlcov/
+.coverage
+.coverage.*
+coverage.xml
 *.cover
 *.py,cover
-.hypothesis/
+nosetests.xml
 
 # =============================================================================
 # Type checking & Linting
@@ -59,36 +94,96 @@ htmlcov/
 .dmypy.json
 dmypy.json
 .ruff_cache/
+.pyre/
+.pytype/
 
 # =============================================================================
-# IDEs
+# IDEs — VS Code
 # =============================================================================
-.vscode/
-.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# =============================================================================
+# IDEs — JetBrains (PyCharm, IntelliJ)
+# =============================================================================
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/aws.xml
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/httpRequests/
+.idea/sonarlint/
+*.iws
+.idea_modules/
+
+# =============================================================================
+# IDEs — other editors
+# =============================================================================
 *.swp
 *.swo
 *~
+*.sublime-workspace
 
 # =============================================================================
-# OS
+# OS — Windows
+# =============================================================================
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# =============================================================================
+# OS — macOS
 # =============================================================================
 .DS_Store
-Thumbs.db
-desktop.ini
+__MACOSX/
+.AppleDouble
+.Spotlight-V100
+.Trashes
+._*
 
 # =============================================================================
-# Project specific
+# OS — Linux
+# =============================================================================
+.fuse_hidden*
+.Trash-*
+.nfs*
+
+# =============================================================================
+# Runtime & process files
 # =============================================================================
 *.log
 logs/
-instance/
+log/
+*.pid
+celerybeat-schedule
+celerybeat.pid
 
-# Alembic (keep versions tracked, ignore pycache)
+# =============================================================================
+# Docker
+# =============================================================================
+docker-compose.override.yml
+docker-compose.local.yml
+
+# =============================================================================
+# Alembic (keep versions tracked, ignore pycache only)
+# =============================================================================
 alembic/__pycache__/
 alembic/versions/__pycache__/
 
 # =============================================================================
-# Documentation & Claude (never go to repo)
+# Documentation & AI tooling  ← never go to repo
 # =============================================================================
 ../Docs/
 ../docs/

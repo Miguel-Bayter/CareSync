@@ -13,7 +13,7 @@ import app.models  # noqa: F401 — registers all ORM models with SQLAlchemy map
 from app.core.config import settings
 from app.core.exception_handlers import register_exception_handlers
 from app.core.logging_config import RequestLoggingMiddleware, setup_logging
-from app.routers import auth, patients
+from app.routers import auth, doses, medications, patients
 
 
 @asynccontextmanager
@@ -65,6 +65,8 @@ def create_app() -> FastAPI:
     prefix = settings.api_v1_prefix
     app.include_router(auth.router, prefix=prefix)
     app.include_router(patients.router, prefix=prefix)
+    app.include_router(medications.router, prefix=prefix)
+    app.include_router(doses.router, prefix=prefix)
 
     # -----------------------------------------------------------------------
     # Health check
