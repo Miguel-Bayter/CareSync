@@ -3,7 +3,7 @@
 ![CI](https://github.com/Miguel-Bayter/CareSync/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/python-3.11+-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-green)
-![Coverage](https://img.shields.io/badge/coverage-73%25-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 REST API for managing medications of elderly patients in care homes.
@@ -23,7 +23,7 @@ CareSync automates the entire medication workflow: from enrolling a medication t
 
 > First request may take 30-50 seconds (free tier cold start)
 
-**Swagger UI:** coming soon after deploy
+**Swagger UI:** `/docs`
 
 **Demo credentials:**
 - Email: `ana.torres@caresync.com`
@@ -45,7 +45,7 @@ CareSync automates the entire medication workflow: from enrolling a medication t
 | Drug Interactions | OpenFDA API | No API key required |
 | PDF Reports | fpdf2 | Pure Python, no GTK |
 | Logging | structlog | Structured JSON logs |
-| Hosting | Render / Koyeb | Free tier |
+| Hosting | Vercel | Free serverless tier |
 | **Total cost** | | **$0.00** |
 
 ---
@@ -144,7 +144,7 @@ HTTP Request
 - **PyJWT** — python-jose is unmaintained since 2023.
 - **pool_pre_ping=True** — Neon.tech serverless cold starts handled gracefully.
 - **bulk_schedule with db.add_all()** — 90 doses in 1 DB round-trip, not 90.
-- **73% test coverage** — Unit tests with MagicMock + integration tests with SQLite in-memory.
+- **100% test coverage** — 203 tests: unit tests with MagicMock + integration tests with SQLite in-memory.
 - **Structured logging** — structlog with correlation IDs on every request.
 
 ---

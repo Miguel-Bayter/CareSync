@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: caresync-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DATABASE_URL
+        sync: false          # Set manually in Render dashboard
+      - key: SECRET_KEY
+        generateValue: true  # Render generates a secure random value
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      - key: DEBUG
+        value: "false"
+      - key: GMAIL_USER
+        sync: false          # Optional — set if email alerts are needed
+      - key: GMAIL_APP_PASSWORD
+        sync: false
+    healthCheckPath: /health

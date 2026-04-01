@@ -117,3 +117,47 @@ class TestConfirmDoseTaken:
         service.confirm_dose_taken(dose_id=dose.id, caregiver_id=caregiver_id)
 
         assert medication.current_stock_units == 0  # stays at 0, not -1
+
+    def test_raises_medication_not_found_when_dose_has_no_medication(self) -> None:
+        from app.core.exceptions import MedicationNotFoundError
+
+        service, dose_repo, medication_repo, _ = _make_service()
+        dose = _make_dose()
+        dose_repo.find_by_id.return_value = dose
+        medication_repo.find_by_id.return_value = None  # medication deleted/missing
+
+        with pytest.raises(MedicationNotFoundError):
+            service.confirm_dose_taken(dose_id=dose.id, caregiver_id=uuid4())
+
+
+class TestGetPatientAdherence:
+    def test_raises_not_found_when_patient_missing(self) -> None:
+        from unittest.mock import patch
+        from app.core.exceptions import NotFoundError
+
+        service, dose_repo, medication_repo, _ = _make_service()
+
+        # The import is lazy (inside the function), patch the source module
+        with patch("app.repositories.patient_repo.ElderlyPatientRepository") as mock_repo_cls:
+            patient_repo = MagicMock()
+            patient_repo.find_by_id.return_value = None
+            mock_repo_cls.return_value = patient_repo
+
+            with pytest.raises(NotFoundError):
+                service.get_patient_adherence(patient_id=uuid4(), caregiver_id=uuid4())
+
+    def test_raises_forbidden_when_wrong_caregiver(self) -> None:
+        from unittest.mock import patch
+
+        service, dose_repo, medication_repo, _ = _make_service()
+        caregiver_id = uuid4()
+
+        with patch("app.repositories.patient_repo.ElderlyPatientRepository") as mock_repo_cls:
+            patient = MagicMock()
+            patient.caregiver_id = uuid4()  # different caregiver
+            patient_repo = MagicMock()
+            patient_repo.find_by_id.return_value = patient
+            mock_repo_cls.return_value = patient_repo
+
+            with pytest.raises(ForbiddenError):
+                service.get_patient_adherence(patient_id=uuid4(), caregiver_id=caregiver_id)
