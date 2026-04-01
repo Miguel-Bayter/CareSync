@@ -79,7 +79,7 @@ class TestEnrollMedication:
         self, client: TestClient, medication_payload
     ) -> None:
         """A caregiver should not enroll a medication for another caregiver's patient."""
-        _, patient_id, payload = medication_payload
+        _, _patient_id, payload = medication_payload
         # Register a second caregiver and use their token
         other_token = _register_and_login(client, "other_nurse@example.com")
         response = client.post(MEDICATIONS_URL, json=payload, headers=_auth(other_token))

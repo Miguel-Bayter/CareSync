@@ -1,6 +1,5 @@
 """Unit tests for domain exceptions — covers all constructors with/without args."""
 
-import pytest
 
 from app.core.exceptions import (
     AppException,
@@ -19,7 +18,6 @@ from app.core.exceptions import (
     NotFoundError,
     PatientNotFoundError,
 )
-
 
 # ---------------------------------------------------------------------------
 # AppException (base)

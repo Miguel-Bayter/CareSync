@@ -1,6 +1,6 @@
 """Unit tests for CaregiverAuthService using mocked repositories."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest.mock import MagicMock
 from uuid import uuid4
 
@@ -24,8 +24,8 @@ def _make_caregiver(email: str = "test@example.com", password: str = "Password12
     caregiver.full_name = "Test User"
     caregiver.hashed_password = hash_password(password)
     caregiver.is_active = True
-    caregiver.created_at = datetime.now(timezone.utc)
-    caregiver.updated_at = datetime.now(timezone.utc)
+    caregiver.created_at = datetime.now(UTC)
+    caregiver.updated_at = datetime.now(UTC)
     return caregiver
 
 

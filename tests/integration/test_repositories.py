@@ -3,18 +3,14 @@
 from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
-import pytest
-
 from app.domain.enums import AlertChannel, AlertType, DoseStatus
 from app.models.alert import MedicationAlertModel
 from app.models.dose import ScheduledDoseModel
 from app.repositories.alert_repo import AlertRepository
-from app.repositories.base_repository import BaseRepository
 from app.repositories.dose_repo import ScheduledDoseRepository
 from tests.factories.caregiver_factory import CaregiverFactory
 from tests.factories.medication_factory import MedicationFactory
 from tests.factories.patient_factory import PatientFactory
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -157,7 +153,7 @@ class TestAlertRepository:
         caregiver = _create_caregiver(db_session)
         patient = _create_patient(db_session, caregiver=caregiver)
         med = _create_medication(db_session, patient)
-        older = _create_alert(db_session, patient.id, med.id, hours_ago=10)
+        _create_alert(db_session, patient.id, med.id, hours_ago=10)
         newer = _create_alert(db_session, patient.id, med.id, hours_ago=1)
 
         repo = AlertRepository(db_session)

@@ -2,7 +2,6 @@
 
 from unittest.mock import patch
 
-import pytest
 from fastapi.testclient import TestClient
 
 REGISTER_URL = "/api/v1/auth/register"
@@ -39,8 +38,9 @@ class TestAuthDependencyEdgeCases:
 
     def test_token_for_nonexistent_user_returns_401(self, client: TestClient) -> None:
         """A valid JWT whose subject UUID isn't in the DB triggers line 46."""
-        from app.core.security import create_access_token
         from uuid import uuid4
+
+        from app.core.security import create_access_token
 
         # Create token for a UUID that was never registered
         ghost_token = create_access_token(str(uuid4()))

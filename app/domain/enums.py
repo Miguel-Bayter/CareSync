@@ -3,10 +3,10 @@
 These are pure-Python enums with no framework dependencies.
 """
 
-from enum import Enum
+from enum import StrEnum
 
 
-class DoseStatus(str, Enum):
+class DoseStatus(StrEnum):
     """Possible states for a scheduled medication dose."""
 
     PENDING = "pending"
@@ -14,7 +14,7 @@ class DoseStatus(str, Enum):
     MISSED = "missed"
 
 
-class AlertType(str, Enum):
+class AlertType(StrEnum):
     """Types of automated alerts the system can emit."""
 
     DOSE_REMINDER = "dose_reminder"
@@ -23,14 +23,14 @@ class AlertType(str, Enum):
     MEDICATION_EXPIRING = "medication_expiring"
 
 
-class AlertChannel(str, Enum):
+class AlertChannel(StrEnum):
     """Delivery channels for alerts."""
 
     EMAIL = "email"
     WHATSAPP = "whatsapp"
 
 
-class ChronicCondition(str, Enum):
+class ChronicCondition(StrEnum):
     """Recognised chronic medical conditions for elderly patients."""
 
     DIABETES_TYPE2 = "diabetes_type2"

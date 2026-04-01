@@ -4,7 +4,6 @@ import smtplib
 from unittest.mock import MagicMock, patch
 from uuid import uuid4
 
-from app.domain.enums import AlertType
 from app.services.alert_service import MedicationAlertService
 
 
@@ -128,7 +127,7 @@ class TestProcessMissedDoses:
         alert_repo.save.assert_not_called()
 
     def test_skips_missed_dose_when_medication_not_found(self) -> None:
-        service, alert_repo, dose_repo, medication_repo = _make_service()
+        service, _alert_repo, dose_repo, medication_repo = _make_service()
         dose_repo.find_overdue_doses.return_value = [_make_dose()]
         medication_repo.find_by_id.return_value = None
 

@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.dependencies import CaregiverDep
-from app.models.caregiver import ResponsibleCaregiverModel
 from app.repositories.patient_repo import ElderlyPatientRepository
 from app.schemas.patient import ElderlyPatientEnrollmentRequest, PatientSummaryResponse
 from app.services.patient_service import ElderlyPatientService

@@ -115,8 +115,8 @@ class DoseTrackingService:
         Raises:
             ForbiddenError: If the patient belongs to a different caregiver.
         """
-        from app.repositories.patient_repo import ElderlyPatientRepository
         from app.core.exceptions import NotFoundError
+        from app.repositories.patient_repo import ElderlyPatientRepository
 
         patient_repo = ElderlyPatientRepository(self.db)
         patient = patient_repo.find_by_id(patient_id)

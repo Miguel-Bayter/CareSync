@@ -96,7 +96,7 @@ class ScheduledDoseRepository(BaseRepository[ScheduledDoseModel]):
             .group_by(ScheduledDoseModel.status)
             .all()
         )
-        stats: dict[DoseStatus, int] = {status: 0 for status in DoseStatus}
+        stats: dict[DoseStatus, int] = dict.fromkeys(DoseStatus, 0)
         for status_value, count in rows:
             stats[DoseStatus(status_value)] = count
         return stats

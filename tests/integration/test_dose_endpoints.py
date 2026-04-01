@@ -63,7 +63,9 @@ class TestConfirmDose:
     ) -> None:
         """POST /doses/{dose_id}/confirm should mark the dose as taken."""
         from uuid import UUID
+
         from sqlalchemy import select
+
         from app.models.dose import ScheduledDoseModel
 
         token, _, medication_id = enrolled_setup
@@ -91,7 +93,9 @@ class TestConfirmDose:
     ) -> None:
         """Confirming the same dose twice should return 409 Conflict."""
         from uuid import UUID
+
         from sqlalchemy import select
+
         from app.models.dose import ScheduledDoseModel
 
         token, _, medication_id = enrolled_setup
@@ -117,7 +121,9 @@ class TestConfirmDose:
     ) -> None:
         """Unauthenticated confirm should return 401."""
         from uuid import UUID
+
         from sqlalchemy import select
+
         from app.models.dose import ScheduledDoseModel
 
         _, _, medication_id = enrolled_setup

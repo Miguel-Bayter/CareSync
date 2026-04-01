@@ -1,6 +1,6 @@
 """Unit tests for ElderlyPatientService."""
 
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from unittest.mock import MagicMock
 from uuid import uuid4
 
@@ -22,7 +22,7 @@ class _FakePatient:
         self.room_number = "101"
         self.chronic_conditions = ["hypertension"]
         self.caregiver_id = caregiver_id or uuid4()
-        self.created_at = datetime.now(timezone.utc)
+        self.created_at = datetime.now(UTC)
 
 
 def _make_service():

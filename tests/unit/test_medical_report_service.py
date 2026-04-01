@@ -95,8 +95,6 @@ class TestGenerateMonthlyMedicalReport:
         assert result[:4] == b"%PDF"
 
     def test_returns_pdf_bytes_with_medications_and_alerts(self) -> None:
-        from app.schemas.dose import AdherenceRateResponse
-        from app.domain.enums import DoseStatus
 
         caregiver_id = uuid4()
         patient = _make_patient(caregiver_id=caregiver_id)
@@ -123,7 +121,6 @@ class TestGenerateMonthlyMedicalReport:
         assert result[:4] == b"%PDF"
 
     def test_pdf_with_low_adherence_red_color(self) -> None:
-        from app.domain.enums import DoseStatus
 
         caregiver_id = uuid4()
         patient = _make_patient(caregiver_id=caregiver_id)

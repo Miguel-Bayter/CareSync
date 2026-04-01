@@ -6,16 +6,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from app.database import Base, get_db
-
 # Import all models so SQLAlchemy mapper registry resolves all string-based
 # relationship references before any fixture creates tables or model instances.
-import app.models.alert  # noqa: F401
-import app.models.caregiver  # noqa: F401
-import app.models.dose  # noqa: F401
-import app.models.medication  # noqa: F401
+import app.models.alert
+import app.models.caregiver
+import app.models.dose
+import app.models.medication
 import app.models.patient  # noqa: F401
-
+from app.database import Base, get_db
 from app.main import app as fastapi_app  # alias avoids shadowing the 'app' package
 
 # ---------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 """Unit tests for app.database — get_db generator behavior."""
 
+import contextlib
 from unittest.mock import MagicMock, patch
 
 
@@ -12,16 +13,15 @@ class TestGetDb:
             gen = get_db()
             session = next(gen)
             assert session is mock_session
-            try:
+            with contextlib.suppress(StopIteration):
                 next(gen)
-            except StopIteration:
-                pass
         mock_session.commit.assert_called_once()
         mock_session.close.assert_called_once()
 
     def test_rolls_back_and_reraises_on_exception(self) -> None:
-        from app.database import get_db
         import pytest
+
+        from app.database import get_db
 
         mock_session = MagicMock()
         with patch("app.database.SessionLocal", return_value=mock_session):
@@ -41,8 +41,6 @@ class TestGetDb:
         with patch("app.database.SessionLocal", return_value=mock_session):
             gen = get_db()
             next(gen)
-            try:
+            with contextlib.suppress(StopIteration):
                 next(gen)
-            except StopIteration:
-                pass
         mock_session.close.assert_called_once()

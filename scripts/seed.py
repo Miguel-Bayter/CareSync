@@ -181,7 +181,7 @@ def seed() -> None:
         print(f"  Patient   : {patient.full_name} (born {patient.date_of_birth})")
         print(f"  Medications: {len(MEDICATIONS)} enrolled")
         print(f"  Doses      : {total_doses_created} scheduled (30-day history)")
-        print(f"  Adherence  : ~85% (1 in 7 doses missed)")
+        print("  Adherence  : ~85% (1 in 7 doses missed)")
         print("=" * 50)
 
     except Exception as exc:

@@ -1,6 +1,5 @@
 """Unit tests for DoseTrackingService."""
 
-from datetime import UTC, datetime
 from unittest.mock import MagicMock
 from uuid import uuid4
 
@@ -133,9 +132,10 @@ class TestConfirmDoseTaken:
 class TestGetPatientAdherence:
     def test_raises_not_found_when_patient_missing(self) -> None:
         from unittest.mock import patch
+
         from app.core.exceptions import NotFoundError
 
-        service, dose_repo, medication_repo, _ = _make_service()
+        service, _dose_repo, _medication_repo, _ = _make_service()
 
         # The import is lazy (inside the function), patch the source module
         with patch("app.repositories.patient_repo.ElderlyPatientRepository") as mock_repo_cls:
@@ -149,7 +149,7 @@ class TestGetPatientAdherence:
     def test_raises_forbidden_when_wrong_caregiver(self) -> None:
         from unittest.mock import patch
 
-        service, dose_repo, medication_repo, _ = _make_service()
+        service, _dose_repo, _medication_repo, _ = _make_service()
         caregiver_id = uuid4()
 
         with patch("app.repositories.patient_repo.ElderlyPatientRepository") as mock_repo_cls:

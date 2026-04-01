@@ -2,14 +2,11 @@
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from app.scheduler.jobs import (
     daily_stock_check_job,
     dose_reminder_job,
     missed_dose_detection_job,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers

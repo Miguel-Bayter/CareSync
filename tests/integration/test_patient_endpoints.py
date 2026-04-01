@@ -1,6 +1,5 @@
 """Integration tests for patient management endpoints."""
 
-from datetime import date
 
 import pytest
 from fastapi.testclient import TestClient

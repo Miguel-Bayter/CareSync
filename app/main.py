@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
-import app.models  # noqa: F401 — registers all ORM models with SQLAlchemy mapper
+import app.models
 from app.core.config import settings
 from app.core.exception_handlers import register_exception_handlers
 from app.core.logging_config import RequestLoggingMiddleware, setup_logging

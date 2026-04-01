@@ -9,10 +9,10 @@ from app.core.config import settings
 from app.database import Base
 
 # Import all models so Alembic can detect schema changes via autogenerate
-import app.models.alert  # noqa: F401
-import app.models.caregiver  # noqa: F401
-import app.models.dose  # noqa: F401
-import app.models.medication  # noqa: F401
+import app.models.alert
+import app.models.caregiver
+import app.models.dose
+import app.models.medication
 import app.models.patient  # noqa: F401
 
 # This is the Alembic Config object, which provides access to the .ini file.

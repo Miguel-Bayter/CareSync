@@ -75,7 +75,7 @@ def daily_stock_check_job() -> None:
     """
     db = SessionLocal()
     try:
-        patient_repo = ElderlyPatientRepository(db)
+        ElderlyPatientRepository(db)
         medication_repo = MedicationRepository(db)
 
         # Gather all caregivers' patients via a direct query

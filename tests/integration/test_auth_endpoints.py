@@ -3,7 +3,6 @@
 import pytest
 from fastapi.testclient import TestClient
 
-
 REGISTER_URL = "/api/v1/auth/register"
 LOGIN_URL = "/api/v1/auth/login"
 PATIENTS_URL = "/api/v1/patients/"

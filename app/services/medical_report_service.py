@@ -7,12 +7,12 @@ from fpdf import FPDF
 from sqlalchemy.orm import Session
 
 from app.core.exceptions import ForbiddenError, NotFoundError
+from app.domain.enums import DoseStatus
 from app.repositories.alert_repo import AlertRepository
 from app.repositories.dose_repo import ScheduledDoseRepository
 from app.repositories.medication_repo import MedicationRepository
 from app.repositories.patient_repo import ElderlyPatientRepository
 from app.schemas.dose import AdherenceRateResponse
-from app.domain.enums import DoseStatus
 
 
 class MedicalReportService:

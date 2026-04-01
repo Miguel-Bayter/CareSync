@@ -1,18 +1,17 @@
 """MedicationAlertService — create alerts and send email notifications via Gmail SMTP."""
 
 import smtplib
-import structlog
 from datetime import UTC, datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from uuid import UUID
 
+import structlog
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.domain.enums import AlertChannel, AlertType
 from app.models.alert import MedicationAlertModel
-from app.models.dose import ScheduledDoseModel
 from app.repositories.alert_repo import AlertRepository
 from app.repositories.dose_repo import ScheduledDoseRepository
 from app.repositories.medication_repo import MedicationRepository
