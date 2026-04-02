@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 import structlog
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
 import app.models
@@ -84,6 +84,10 @@ def create_app() -> FastAPI:
     # -----------------------------------------------------------------------
     # Health check
     # -----------------------------------------------------------------------
+    @app.get("/", include_in_schema=False)
+    def root() -> RedirectResponse:
+        return RedirectResponse(url="/docs")
+
     @app.get("/health", tags=["Ops"], summary="Health check")
     def health() -> JSONResponse:
         return JSONResponse({"status": "ok", "version": "0.1.0"})
