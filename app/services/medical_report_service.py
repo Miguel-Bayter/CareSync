@@ -3,7 +3,6 @@
 from datetime import UTC, datetime
 from uuid import UUID
 
-from fpdf import FPDF
 from sqlalchemy.orm import Session
 
 from app.core.exceptions import ForbiddenError, NotFoundError
@@ -84,6 +83,8 @@ class MedicalReportService:
 
         if not isinstance(patient, ElderlyPatientModel):
             raise TypeError(f"Expected ElderlyPatientModel, got {type(patient).__name__}")
+
+        from fpdf import FPDF  # lazy import — fpdf2 is heavy; keep startup fast
 
         pdf = FPDF()
         pdf.set_auto_page_break(auto=True, margin=15)
